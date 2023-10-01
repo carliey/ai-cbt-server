@@ -1,0 +1,3 @@
+[console_scripts]
+fs = flask_setup:run
+
