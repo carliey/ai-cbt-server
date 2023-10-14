@@ -21,14 +21,14 @@ def auth_required(*roles_required):
                     token, app.config.get("JWT_SECRET_KEY"), algorithms=["HS256"]
                 )
                 auth_id = payload["sub"]
-                role = payload["role"]
-                # check role
-                if roles_required:
-                    if role not in roles_required:
-                        return (
-                            jsonify({"message": "Unauthorized to perform action"}),
-                            401,
-                        )
+                # role = payload["role"]
+                # # check role
+                # if roles_required:
+                #     if role not in roles_required:
+                #         return (
+                #             jsonify({"message": "Unauthorized to perform action"}),
+                #             401,
+                #         )
             except ExpiredSignatureError:
                 return jsonify({"message": "Expired or Invalid Token"}), 401
             except InvalidSignatureError:
@@ -36,7 +36,6 @@ def auth_required(*roles_required):
             except DecodeError:
                 return jsonify({"message": "Malformed Token"}), 401
             except Exception as e:
-                print("well well")
                 return jsonify({"message": "Unknown Error"}), 401
             g.user = User.get_by_id(auth_id)
             return f(*args, **kwargs)

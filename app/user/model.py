@@ -17,12 +17,11 @@ class User(db.Model):
         db.session.add(self)
         db.session.commit()
 
-    def update_profile(self, new_name=None, new_about=None):
-        if new_name is not None:
-            self.name = new_name
-        if new_about is not None:
-            self.about = new_about
-        self.save()
+    def update(self, new_name=None, new_about=None):
+        self.name = new_name or self.name
+        self.about = new_about or self.about
+        db.session.commit()
+        return True
 
     def generate_password(self):
         alphabet = string.ascii_letters + string.digits
@@ -65,6 +64,13 @@ class User(db.Model):
     @classmethod
     def get_by_email(self, email):
         return User.query.filter(User.email == email).first()
+
+    @classmethod
+    def create(cls, email, password, name, about):
+        user = cls(email=email, password=password, name=name, about=about)
+        user.hash_password()
+        user.save()
+        return user
 
     @classmethod
     def create(cls, email, password, name, about):

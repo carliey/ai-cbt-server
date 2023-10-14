@@ -1,3 +1,4 @@
+from datetime import datetime
 from app import db
 from app.user.model import User
 import os
@@ -130,6 +131,9 @@ class Quiz(db.Model):
         description,
         questions: list = [],
     ):
+        # Convert the date string to a datetime object
+        date = datetime.strptime(date, "%Y-%m-%d")
+
         quiz = cls(
             title=title,
             administrator_id=administrator_id,
@@ -137,7 +141,6 @@ class Quiz(db.Model):
             duration=duration,
             instruction=instruction,
             description=description,
-            questions=questions,
         )
         quiz.save()
         Question.add_to_quiz(quiz.id, questions)

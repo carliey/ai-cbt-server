@@ -47,12 +47,19 @@ def update_profile():
     user = (
         g.user
     )  # Get the authenticated user from the request context (assuming @auth_required sets it)
-    if new_name:
-        user.update_name(new_name)
-    if new_about:
-        user.update_about(new_about)
-
-    return jsonify({"message": "Profile updated successfully"}), 200
+    print(user)
+    updated = user.update(new_name, new_about)
+    if updated:
+        return (
+            jsonify(
+                {
+                    "message": "Profile updated successfully",
+                    "data": UserSchema().dump(user),
+                }
+            ),
+            200,
+        )
+    return jsonify({"error": "error updating profile"}), 400
 
 
 @bp.post("/register")
