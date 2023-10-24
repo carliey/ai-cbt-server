@@ -64,6 +64,7 @@ def get_quizs():
 
 @bp.post("/extract-participants")
 def upload_excel():
+    print(request.files)
     if "excel" not in request.files:
         return jsonify({"error": "No file part"}), 400
 

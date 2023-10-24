@@ -1,6 +1,4 @@
 import pandas as pd
-import requests
-
 
 # def get_participants_from_file(attendance_file_url):
 #     doc = requests.get(attendance_file_url).content
